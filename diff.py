@@ -10,6 +10,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 
+import sys
+
 
 def strcmp(first, second):
     """A string comparsion function
@@ -21,11 +23,13 @@ def strcmp(first, second):
     sign = 1
     processing_index = -1
     current_count_progress = 0
+    # Swap strings and change sign if first is bigger than secodn
     if len(first) > len(second):
         sign = -1
         first, second = second, first
     first_len = len(first)
     for to_chr in second:
+        # If we've got no processing character, find it
         if processing_index < 0: 
             for j, from_chr in zip(range(first_len), first):
                 if to_chr == from_chr:
@@ -33,8 +37,11 @@ def strcmp(first, second):
                     processing_index = j
                     break
         else:
+            # Otherwise increase it by one
             processing_index += 1
+            # Check if it is still less than first string's length
             if processing_index >= first_len:
+                # Otherwise, exit loop
                 break
             if to_chr == first[processing_index]:
                 current_count_progress += 1
@@ -46,9 +53,9 @@ def strcmp(first, second):
     if current_count_progress:
         same_chars += current_count_progress
     return sign * (1 - float(same_chars) / len(second))
-        
-if __name__ == '__main__':
-    
+
+
+def run_tests():    
     tests = (
         (('a', 'a'), 0),
         (('a', 'aa'), 50),
@@ -60,7 +67,6 @@ if __name__ == '__main__':
         (('babc', 'ab'), -75),
     )
 
-    print(len(tests))
     for strs, assertion in tests:
         try:
             assert round(100*strcmp(*strs)) == assertion
@@ -70,3 +76,6 @@ if __name__ == '__main__':
                 assertion,
                 round(100*strcmp(*strs)))
             )
+        
+if __name__ == '__main__':
+    print(round(strcmp(sys.argv[1], sys.argv[2]) * 100) / 100)
