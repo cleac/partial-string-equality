@@ -6,16 +6,17 @@ def strcmp(first, second):
     if len(first) > len(second):
         sign = -1
         first, second = second, first
-    for i, to_chr in zip(range(len(second)), second):
+    first_len = len(first)
+    for to_chr in second:
         if processing_index < 0: 
-            for j, from_chr in zip(range(len(first)), first):
+            for j, from_chr in zip(range(first_len), first):
                 if to_chr == from_chr:
                     current_count_progress = 1
                     processing_index = j
                     break
         else:
             processing_index += 1
-            if processing_index >= len(first):
+            if processing_index >= first_len:
                 break
             if to_chr == first[processing_index]:
                 current_count_progress += 1
@@ -41,6 +42,7 @@ if __name__ == '__main__':
         (('babc', 'ab'), -75),
     )
 
+    print(len(tests))
     for strs, assertion in tests:
         try:
             assert round(100*strcmp(*strs)) == assertion
