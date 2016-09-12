@@ -4,10 +4,17 @@ def strcmp(first, second):
     mark = False
     checkpoints = []
     prev_char = ''
+    if len(first) > len(second):
+        sign = -1
+        first, second = second, first
     for to_chr in second:
         found = False
+        if prev_char == to_chr:
+            continue
+        prev_char = to_chr
+        # Problem in this part.
+        # The position of current element should be saved and checked
         for from_chr in first:
-            prev_char = from_chr
             if to_chr == from_chr:
                 found = True
                 mark = True
@@ -16,20 +23,19 @@ def strcmp(first, second):
         if mark and not found:
             mark = False
             same_chars -= 1
-    print(same_chars)
     return sign * (1 - float(same_chars) / len(second))
         
 if __name__ == '__main__':
     
     tests = (
         (('a', 'a'), 0),
-        (('a', 'aa'), 0),
+        (('a', 'aa'), 50),
         (('ab', 'ab'), 0),
-        (('ab', 'aab'), 33),
-        (('ba', 'ab'), 1),
-        (('ba', 'bab'), 33),
-        (('aa', 'bab'), 67),
-        (('bab', 'a'), -67),
+        (('ab', 'aaab'), 50),
+        (('ba', 'abcd'), 100),
+        (('ba', 'babc'), 50),
+        (('aa', 'baab'), 50),
+        (('babc', 'ab'), -50),
     )
 
     for strs, assertion in tests:
